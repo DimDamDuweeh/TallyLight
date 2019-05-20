@@ -16,11 +16,7 @@ def get_data(socket):
             data = socket.recv(MSG_SIZE)
             data = str(data, 'utf-8')
             antwoord = data.split(' ')
-            print(antwoord[2])
             tallyIndex(antwoord[2])
-
-            index = tallyIndex(antwoord[2])
-            tallySwitcher(index)
 
             if not data:
                 break
@@ -37,18 +33,18 @@ print("Connected...")
 
 def tallyIndex(response):
     try:
-        # print uit op welke index de camera die live is staat
-        print(response.index("1"))
+        if response.index("1") == 0:
+            print("Camera 1")
+        elif response.index("1") == 1:
+            print("Camera 2")
+        elif response.index("1") == 2:
+            print("Camera 3")
+
     except Exception as e:
         print(e)
     finally:
         print(response)
         return response
-
-
-def tallySwitcher(switch):
-    if switch == "1":
-        print("kappa")
 
 
 socket.send(bytes("SUBSCRIBE TALLY\r\n", 'utf-8'))

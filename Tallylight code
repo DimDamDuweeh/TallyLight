@@ -1,0 +1,57 @@
+# @author Dennis Vermeer
+# Code om de Tallylight (Pi Zero) open te zetten om commandos te ontvangen
+
+import socket
+import RPi.GPIO as GPIO
+import time
+import socket
+import RPi.GPIO as GPIO
+import time
+
+ledPin1 = 13
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(ledPin1, GPIO.OUT)
+
+UDP_IP = "192.168.5.9"
+UDP_PORT = 5005
+
+sock = socket.socket(socket.AF_INET, # Internet
+socket.SOCK_DGRAM) # UDP
+sock.bind((UDP_IP, UDP_PORT))
+
+
+GPIO.output(ledPin1, False)
+while True:
+        data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
+        print "received message:", data
+        data = int(data)
+        if data == 13:
+                GPIO.output(ledPin1, True)
+        else:
+                GPIO.output(ledPin1, False)
+
+
+ledPin1 = 13
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(ledPin1, GPIO.OUT)
+
+UDP_IP = "192.168.5.9"
+UDP_PORT = 5005
+
+sock = socket.socket(socket.AF_INET, # Internet
+socket.SOCK_DGRAM) # UDP
+sock.bind((UDP_IP, UDP_PORT))
+
+GPIO.output(ledPin1, False)
+while True:
+        data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
+        print "received message:", data
+        data = int(data)
+        if data == 13:
+                GPIO.output(ledPin1, True)
+        else:
+                GPIO.output(ledPin1, False)
+
+

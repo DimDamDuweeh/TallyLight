@@ -1,0 +1,71 @@
+# @author Dennis Vermeer
+# Code om de basestation VMix te laten lezen en commandos te sturen naar de tallylights
+
+
+import socket
+from socket import error as socket_error
+import threading
+import time
+
+TCP_IP = '192.168.5.15'
+TCP_PORT = 8099
+MSG_SIZE = 1024
+UDP_IP1 = "192.168.5.9"
+UDP_IP2 = "192.168.5.18"
+UDP_PORT = 5005
+
+def controllerSend(MESSAGE):
+    print "UDP target IP:", UDP_IP1, UDP_IP2
+    print "UDP target port:", UDP_PORT
+    print "message:", MESSAGE
+
+    sock = socket.socket(socket.AF_INET,
+    socket.SOCK_DGRAM) # UDP
+    sock.sendto(MESSAGE, (UDP_IP1, UDP_PORT))
+    sock.sendto(MESSAGE, (UDP_IP2, UDP_PORT))
+
+
+# Maakt TCP/IP socket aan
+socket2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+socket2.connect((TCP_IP, TCP_PORT))
+
+
+def get_data(socket3):
+    while True:
+        try:
+            data = socket3.recv(MSG_SIZE)
+            data = str(data)
+            print("test" + data)
+            antwoord = data.split(' ')
+            #if (len(antwoord)>1):
+            tallyIndex(antwoord[2])
+
+            if not data:
+                break
+        except socket_error as e:
+            print(e)
+            break
+
+
+# Maakt thread aan voor socket connectie
+iThread = threading.Thread(target=get_data, args=(socket2,))
+iThread.start()
+print("Connected...")
+
+
+def tallyIndex(response):
+    try:
+        if response.index("1") == 0:
+            controllerSend("13")
+        elif response.index("1") == 1:
+            controllerSend("12")
+
+    except Exception as e:
+        print(e)
+    finally:
+        print(response)
+        return response
+
+socket2.send(bytes("SUBSCRIBE TALLY\r\n"))
+print("SUBSCRIBED")
+

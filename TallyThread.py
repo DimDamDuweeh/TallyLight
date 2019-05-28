@@ -36,9 +36,10 @@ print("Connected...")
 
 def tallyIndex(response):
     try:
-        # checkt hoeveel tally lights zijn aangesloten en stuurt dit door naar interface
+        # checkt hoeveel tally lights zijn aangesloten en stuurt dit door naar app.py
         tallyAAN = api_url + '/tallyAAN={}'.format(response)
         switch = requests.get(tallyAAN)
+        # Checkt welke tally light live is en stuurt dit door naar app.py
         for i in range(len(response)):
             if response.index("1") == i:
                 url = api_url + '/tally={}'.format(i)

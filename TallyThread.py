@@ -1,3 +1,5 @@
+@author Danja Verburg
+
 import socket
 from socket import error as socket_error
 import threading

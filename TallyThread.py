@@ -1,4 +1,6 @@
-@author Danja Verburg
+# @author Danja Verburg
+# Start een socket en thread die verbonden wordt met vmix via TCP. Er wordt een bericht gestuurd naar Vmix
+# en de response wordt verwerkt in een GET request van app.py
 
 import socket
 from socket import error as socket_error
@@ -40,13 +42,14 @@ def tallyIndex(response):
     try:
         # checkt hoeveel tally lights zijn aangesloten en stuurt dit door naar app.py
         tallyAAN = api_url + '/tallyAAN={}'.format(response)
+        print(tallyAAN.split("\\")[0])
         switch = requests.get(tallyAAN)
         # Checkt welke tally light live is en stuurt dit door naar app.py
         for i in range(len(response)):
             if response.index("1") == i:
                 url = api_url + '/tally={}'.format(i)
                 tally = requests.get(url)
-                print(i, " taart")
+                print(i)
 
     except Exception as e:
         print(e)
@@ -55,4 +58,4 @@ def tallyIndex(response):
         return response
 
 
-socket.send(bytes("SUBSCRIBE TALLY\r\n"))
+socket.send(bytes("SUBSCRIBE TALLY\r\n", encoding='utf8'))

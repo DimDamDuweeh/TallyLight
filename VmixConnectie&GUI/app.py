@@ -1,35 +1,31 @@
 # @Author Danja Verburg
 # flask app met app.routes die worden verwerkt in GUI
 
-from flask import Flask, render_template
-
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello_world():
-    return render_template("test.html")
-
-
-@app.route('/tallyAAN=<tallyAAN>')
-def tallyAAN(tallyAAN):
-    lengte = tallyAAN.split("\\")[0]
-    print(len(lengte))
-    return lengte
+@app.route('/tally/value')
+def send_tally_value():
+    print(tally_value)
+    if tally_value is None:
+        print("No Value")
+        return jsonify({'status': False})
+    else:
+        print("Value Send")
+        return jsonify({'status': True, 'tally_value': tally_value})
 
 
 @app.route('/tally=<tally>')
 def tally(tally):
-    print(tally)
-    if tally == "0":
-        print("taart")
-    elif tally == "1":
-        print("taart is")
-    elif tally == "2":
-        print("taart is lekker")
+    global tally_value
+    tally_value = tally
+    print(tally_value)
 
-    return render_template("test.html")
+    return jsonify({'slider': tally_value})
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='127.0.0.1', port=5000)
+

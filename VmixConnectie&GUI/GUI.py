@@ -32,7 +32,7 @@ class Gui:
     def open_gui(self):
         root = Tk()
 
-        root.title("Pad is kut")
+        root.title("Pad sprint 5")
         root.geometry("400x400+300+300")
 
         tally = tally_value

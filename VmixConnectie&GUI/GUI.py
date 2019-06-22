@@ -1,3 +1,5 @@
+# @author Danja Verburg
+# Krijgt informatie van app.py en opend GUI
 from tkinter import *
 import requests
 from threading import Thread
@@ -36,7 +38,7 @@ class Gui:
         root.geometry("400x400+300+300")
 
         tally = tally_value
-        print(tally, " Some random shit")
+        print(tally, "taart")
 
         if tally == 1:
             tally1 = Label(root, text="Tally 1 ON")
